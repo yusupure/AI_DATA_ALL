@@ -2,3 +2,16 @@
 1维数组np.array([1,2,3])
 2维数组np.array([[i,i+1,i+2] for i in range(3)])
 理解为:先从0开始0，0+1，0+2），(1,1+1,1+2)如此类推通过列表推导式生成二维数组
+
+#原生数组创建方式
+np.arange(start = 1,stop= 10,step=2,dtype = int)开始数，结束数，步进，数据类型，递增数组方法
+np.arange(10)与Python的range基本一致，目的是生成0-9的数字为整数
+
+# 指定元素数量的均匀递增数据
+np.linspace(1.,10.,10)生成1到10的float类型数据，第一为是开始数据，第二是结束数，第三只截止数重1开始到10的浮点数
+
+#全0矩阵
+np.zeros(shape=(3,4),dtype=float)创建一个为3列4行，0的浮点数float的矩阵
+
+#全1矩阵
+np.ones(shape=(3,4),dtype=float)创建一个为3列4行，0的浮点数float的矩阵
