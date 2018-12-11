@@ -51,10 +51,17 @@ choice(a,size,replace,p)	指定数组指定概率分布
 randn(d0,d1,…)	标准正态分布
 
 #均匀分布
-np.random.rand(3,4)随机创建3列4行随机数据
+np.random.rand(3,4)随机创建3列4行随机数据(可以设置为4个维，3列，2行执行)
 #整数均匀分布
 np.random.randint(2,size=(3,4))
+
 #指定数组指定概率分布
+umpy.random.choice(a, size=None, replace=True, p=None)
+从给定的一维数组中生成随机数
+参数： a为一维数组类似数据或整数；size为数组维度；p为数组中的数据出现的概率
+a为整数时，对应的一维数组为np.arange(a)
+^参数p的长度与参数a的长度需要一致；
+^参数p为概率，p里的数据之和应为1
 np.random.choice([1,2,3,4],size=(3,4),replace=True,p=[0.1,0.2,0.3,0.4])
 
 
