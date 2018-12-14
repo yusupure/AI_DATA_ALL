@@ -37,12 +37,26 @@ pd.isnull('字段名称')判断缺失值
 例子：age=df["Age"]先通过age元素获取数据表格内的所有数据
 notnull_name=pd.isnull(age)通过pd.isnull()函数把age内的数据进行判断获取为空的数据
 total_null=age[notnull_name]通过使用age数据匹配已经查找到的空元素，进行匹配获取相关数据
-
 ************************************************************************************************************
 ysjpjz=df["Age"][notnull_name==False]首先获取到数据集中为age的数据，然后在后面添加查找取出控制为TURE的数据，并进行赋值
 pjz=sum(ysjpjz)/len(ysjpjz)可以通过获得数据集进行计算
 **********************************************************************************************************************
 ------------------------------------------------------------------------------------------------------------------------
+pivot_table
+#pinjz=df.pivot_table(index="Pclass",values=["Age"])不添加的aggfunc就默认为平均值mean()
+#df.pivot_table(index="Embarked",values=["Fare","Survived"],aggfunc=np.sum)#计算多个维度数据合计数据
+复杂常规计算方式
+changcangdengji=[1,2,3]
+fenlieshuju={}
+for i in changcangdengji:
+    dejifenlei= df[df["Pclass"]==i]
+    jiage=df["Fare"]
+    pingjjg=jiage.mean()
+    fenlieshuju[i]=pingjjg
+print(fenlieshuju)
+
+------------------------------------------------------------------------------------------------------------------------
+
 mean()获取平均值
 pivot_table(index='字段（以什么为基准）',values='字段（与基准有什么关系）'，aggfunc=np.mean（）)
 pivot_table(index='字段（以什么为基准）',values='字段（与基准有什么关系）'，aggfunc=np.sum（）)
