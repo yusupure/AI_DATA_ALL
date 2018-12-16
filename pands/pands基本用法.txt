@@ -61,7 +61,10 @@ for i in changcangdengji:
 print(fenlieshuju)
 pivot_table(index='字段（以什么为基准）',values='字段（与基准有什么关系）'，aggfunc=np.mean（）)
 pivot_table(index='字段（以什么为基准）',values='字段（与基准有什么关系）'，aggfunc=np.sum（）)
+------------------------------------------------------------------------------------------------------------------------
 dropna()丢掉缺失值的方法
+df.dropna(axis=1)把包含缺失值的整列删除
+df.dropna(axis=0,subset=['Age','Sex'])如果发现subset内存在缺失值就把数据直接删除掉。删除对应的行
 ------------------------------------------------------------------------------------------------------------------------
 #sort_values(排序操作）
     aa=df.sort_values("Age",ascending=False)（默认降序操作。如果为Ture为升序）
@@ -75,4 +78,22 @@ def totalnull(listdata):
     return len(nulldata)
 cc=df.apply(totalnull)
 ------------------------------------------------------------------------------------------------------------------------
+Series()核心结构
+DataFrame()集成上面Series　结构
+from pandas import Series
+#先通过aa=Pd.read_csv("文件名称")打开文件
+#打开文件后通过获取值的方式例如bb=aa["字段名称"]
+film_names=bb.values(获取数据方式)存放刚才获取的数据
+re_scores=series_rt.values(获取数据方式)存放刚才获取的数据
+Series(re_scoures,index=film_names)通过获取到的数据组合成一个新的索引值，用名字当做一个索引
+#查询的方法通过两个List来获取值
+[["aa","bb"]]
+
+####排序功能
+sorted()键值排序
+reindex()数值排序
+类似处理方式
+####相加方式
+add()
+###########
 ------------------------------------------------------------------------------------------------------------------------
