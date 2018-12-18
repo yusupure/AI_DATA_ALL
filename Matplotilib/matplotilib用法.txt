@@ -65,11 +65,33 @@ ax=plt.subplots()
 ax.bar('柱的间距','柱子高度',0.8(柱子的宽度)纵向
 ax.barh()横向
 plt.show()
+reviews = pd.read_csv('fandango_scores.csv')#读取文件
+cols = ['FILM', 'RT_user_norm', 'Metacritic_user_nom', 'IMDB_norm', 'Fandango_Ratingvalue', 'Fandango_Stars']#获取字段名称特定字段
+norm_reviews = reviews[cols]#提取内容
+num_cols = ['RT_user_norm', 'Metacritic_user_nom', 'IMDB_norm', 'Fandango_Ratingvalue', 'Fandango_Stars']#提取有一点差异不能存在str
+bar_h=norm_reviews.ix[0,num_cols].values#获取第一行的数据列表
+bar_p=arange(5)+0.5#创建间距
+set_name=range(1,6)#随机1到6，原因是忽略掉str的文字字段
+fig, ax=plt.subplots()#产生图形
+
+ax.bar(bar_p,bar_h,0.3)#产出图形
+ax.set_xticks(set_name)#设置名称获取1-6地名称
+ax.set_xticklabels(num_cols,rotation=45)#设置名称为45度的变换
+
+ax.set_xlabel('plan')#轴名称
+ax.set_ylabel('kd')#轴名称
+ax.set_title('tst008')#标题
+plt.show()
 -------------------------------------------------------------------------------------------------------------------------------
 点行图scatter
 fig. ax=plt.subplots()
 与上面基本类似做法
 scatter(x,y轴分布的规则)
+fig, ax=plt.subplots()
+ax.scatter(norm_reviews["Fandango_Ratingvalue"],norm_reviews["RT_user_norm"])#提取方式按照上面的数据来获取，或直接读取文件内容
+ax.set_xlabel("RT_user_norm")
+ax.set_ylabel("Fandango_Ratingvalue")
+plt.show()
 -------------------------------------------------------------------------------------------------------------------------------
 -------------------------------------------------------------------------------------------------------------------------------
 -------------------------------------------------------------------------------------------------------------------------------
