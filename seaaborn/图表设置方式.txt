@@ -5,6 +5,20 @@ from scipy import stats, integrate
 import matplotlib.pyplot as plt
 import seaborn as sns
 ---------------------------------------------------------------------------------------------------------
+distplot，seaborn的displot()函数集合了matplotlib的hist()与核函数估计kdeplot的功能，增加了rugplot分布观测条显示与利用scipy库fit拟合参数分布的新颖用途。具体用法如下： 
+seaborn.distplot(a, bins=None, hist=True, kde=True, rug=False, fit=None, hist_kws=None, kde_kws=None, rug_kws=None, fit_kws=None, color=None, vertical=False, norm_hist=False, axlabel=None, label=None, ax=None) 
+Parameters: 
+a : Series, 1d-array, or list. #一维数组 
+bins : argument for matplotlib hist(), or None, optional #设置分桶数 
+hist : bool, optional #控制是否显示分桶柱子 
+kde : bool, optional #控制是否显示核密度估计图 
+rug : bool, optional #控制是否显示观测实例竖线 
+fit : random variable object, optional #控制拟合的参数分布图形 
+{hist, kde, rug, fit}_kws : dictionaries, optional 
+Keyword arguments for underlying plotting functions. 
+vertical : bool, optional #显示正交控制 
+If True, oberved values are on y-axis.
+
 sns.set(color_codes=True)
 np.random.seed(sum(map(ord, "distributions")))
 #ord()函数它以一个字符（长度为1的字符串）作为参数，返回对应的ASCII数值，或者Unicode数值，
