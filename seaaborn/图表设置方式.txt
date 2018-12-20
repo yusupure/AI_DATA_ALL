@@ -13,21 +13,37 @@ bins : argument for matplotlib hist(), or None, optional #设置分桶数
 hist : bool, optional #控制是否显示分桶柱子 
 kde : bool, optional #控制是否显示核密度估计图 
 rug : bool, optional #控制是否显示观测实例竖线 
-fit : random variable object, optional #控制拟合的参数分布图形 
+fit : random variable object, optional ,(stats.gamma) #控制拟合的参数分布图形增加线性统计指标
 {hist, kde, rug, fit}_kws : dictionaries, optional 
 Keyword arguments for underlying plotting functions. 
 vertical : bool, optional #显示正交控制 
 If True, oberved values are on y-axis.
-
+---------------------------------------------------------------------------------------------------------
 sns.set(color_codes=True)
 np.random.seed(sum(map(ord, "distributions")))
 #ord()函数它以一个字符（长度为1的字符串）作为参数，返回对应的ASCII数值，或者Unicode数值，
 #如果所给的Unicode字符超出了你的Python定义范围，则会引发一个TypeError的异常。
 #利用np.random.seed()函数设置相同的seed，每次生成的随机数相同。如果不设置seed，则每次会生成不同的随机数
-sns.distplot(x, bins=20, kde=False)
-kde控制是否画kde曲线，bins是分桶数，rug控制是否画样本点(参考rug图可以设定合理的bins)2
+直方图：
+案例：x=np.random.normal(size=100)
+sns.distplot(x, bins=20, kde=False，fig=stats.gamma)bins=(拆分份数）
+kde控制是否画kde曲线，bins是分桶数，rug控制是否画样本点(参考rug图可以设定合理的bins)
+
 ---------------------------------------------------------------------------------------------------------
+mean. cov=[0,1],[(1,.5),(5,1)]均值，协方差生成数据
+data=np.random.multivariate_normal(mean,cov,200)#生成200个随机数据
+df=pd.DataFrame(data,columns=("x","y")2维数据
+sns.jointplot(x="x",y="y",data=df)主要生成散点图，和直方图生成两个图标矩阵
+蜂巢图
+x,y=np.random.multivariate_normal(mean,cov,200)#
+with sns.axes_style("withe")
+  sns.jointplot(x="x",y="y",kind="hex",data=df)kind制定图形。蜂巢图hex
 ---------------------------------------------------------------------------------------------------------
+内置数据集
+iris=sns.load_dataset("iris")
+sns.pairplot(iris)数据图集
+
+
 ---------------------------------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------------------
