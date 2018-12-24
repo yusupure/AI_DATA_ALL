@@ -65,6 +65,7 @@ pivot_table(index='字段（以什么为基准）',values='字段（与基准有
 dropna()丢掉缺失值的方法
 df.dropna(axis=1)把包含缺失值的整列删除
 df.dropna(axis=0,subset=['Age','Sex'])如果发现subset内存在缺失值就把数据直接删除掉。删除对应的行
+df.fillna(value=0)填充缺失值
 ------------------------------------------------------------------------------------------------------------------------
 #sort_values(排序操作）
     aa=df.sort_values("Age",ascending=False)（默认降序操作。如果为Ture为升序）
