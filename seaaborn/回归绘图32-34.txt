@@ -29,10 +29,10 @@ sns.load_dataset("iris",tips,titanic)
 sns.stripplot(x="daty",y="total_bill",data=tips,jitter=True)
 jitter=True增加数据的偏移值
 
+散点图
 sns.swarmplot(x="total_bill",y="daty",data=tips,hue="sex")
 更好X,Y的值存放位置就会变成横向或纵向方式显示图形
-hue="sex"对指标进行分色处理
-hue="time"
+hue="分类数据"
 
 -----------------------------------------------------------------------------------------------------------------------------------
 合图：
@@ -44,6 +44,40 @@ sns.boxplot(x="day",y="total_bill",hue="time",data=tipe)
 小提琴图
 sns.violinplot(x="day",y="total_bill",hue="time",data=tipe,split=Ture)
 split=Ture左右属性进行分拆方式
+-----------------------------------------------------------------------------------------------------------------------------------
+散点图和提琴图合并两个图形
+sns.violinplot(x="day",y="total_bill",hue="time",data=tipe,split=Ture,inner=None)
+inner=None取消中间的点型
+
+sns.swarmplot(x="total_bill",y="daty",data=tips,hue="sex",color='w',alpha=.5)
+color=颜色值;
+alpha=.5透明程度
+
+-----------------------------------------------------------------------------------------------------------------------------------
+条形图：
+sns.barplot(x="sex",y="survived",hue='class',data=titanic)
+hue='class'数据字段分色块
+
+-----------------------------------------------------------------------------------------------------------------------------------
+点图带线链接：
+sns.pointplot(x="sex",y="survived",hue='class',data=titanic)
+点图升级显示方式：
+sns.pointplot(x="sex",y="survived",hue='class',data=titanic,
+              palette={"meln":"g","famale":"m"},把男女设定的颜色
+              markers={"^","o"},linestyles=["-","--"]通过marker设定他们所在点的图形，linestyles=设定List方式图形链接的线方法
+              )
+
+-----------------------------------------------------------------------------------------------------------------------------------
+sns.boxplot(data=iris,orient="h")
+orient=用于设定横向或者纵向方式
+
+-----------------------------------------------------------------------------------------------------------------------------------
+折线图：
+sns.factorplot(x="sex",y="survived",hue='smoker',data=titanic)
+
+sns.factorplot(x="sex",y="survived",hue='smoker',col="time",data=tips,kind="swarm")
+col="time"时间字段的平铺方式
+
 -----------------------------------------------------------------------------------------------------------------------------------
 
 ###################################################################################################################################
