@@ -17,16 +17,29 @@ sns.regplot(x="total_bill",y="tip",data=tips)x,y轴名称，传入data方式
 x_jitter=.05加入小范围的浮动值
 sns.implot()工具更多功能更多
 -----------------------------------------------------------------------------------------------------------------------------------
-回归绘图2
+
+回归绘图33课时
 sns.set(style="whitegrid",color_codes=True)
 np.random.seed(sum(map(ord, "regression")))
+
 提取三个数据集
 sns.load_dataset("iris",tips,titanic)
+
 -----------------------------------------------------------------------------------------------------------------------------------
-sns.stripplot(x="daty",y="total_bill",data=tips)
+sns.stripplot(x="daty",y="total_bill",data=tips,jitter=True)
+jitter=True增加数据的偏移值
+
+sns.swarmplot(x="total_bill",y="daty",data=tips,hue="sex")
+更好X,Y的值存放位置就会变成横向或纵向方式显示图形
+hue="sex"对指标进行分色处理
+hue="time"
+
 -----------------------------------------------------------------------------------------------------------------------------------
-sns.swarmplot(x="daty",y="total_bill",data=tips)
------------------------------------------------------------------------------------------------------------------------------------
+合图：
+sns.boxplot(x="day",y="total_bill",hue="time",data=tipe)
+
+###################################################################################################################################
+
 sns.factorplot(kind=图形名称)可以转换成任何一类图形
 seaborn.factorplot(x=None, y=None, hue=None, data=None, row=None, col=None, col_wrap=None, estimator=<function mean>, ci=95, n_boot=1000, units=None, order=None, hue_order=None, row_order=None, col_order=None, kind='point', size=4, aspect=1, orient=None, color=None, palette=None, legend=True, legend_out=True, sharex=True, sharey=True, margin_titles=False, facet_kws=None, **kwargs)
 
