@@ -1,0 +1,45 @@
+FaceGrid函数：使用较多子集的时候使用的函数
+------------------------------------------------------------------------------------------------------
+%matplotlib inline
+import numpy as np
+import pandas as pd
+import seaborn as sns
+from scipy import stats
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+sns.set(style="ticks")
+np.random.seed(sum(map(ord, "axis_grids")))
+-----------------------------------------------------------------------------------------------------
+条形图
+tips=sns.load_dataset("tips")
+g=sns.FaceGrid(tips,col="time")先创建好数据框架
+g.map(plt.hist,"tip")#plt.hist条形图方式
+
+------------------------------------------------------------------------------------------------------
+g=sns.FaceGrid(tips,col="sex",hue="somker")#hue代表类别信息名称
+g.map(plt.scatter,"total_bill","tip",appha=.7)直接制定数据字段及透明程度
+g.add_legend()悬浮类别信息
+
+------------------------------------------------------------------------------------------------------
+g = sns.FacetGrid(tips, row="smoker", col="time", margin_titles=True)
+g.map(sns.regplot, "size", "total_bill", color=".1", fit_reg=False, x_jitter=.1);
+margin_titles=True是否显示标题名称
+fit_reg=False回归线
+x_jitterr=.1#浮动值
+------------------------------------------------------------------------------------------------------
+布局相
+g = sns.FacetGrid(tips, col="day", size=4, aspect=.5)
+g.map(sns.barplot, "sex", "total_bill");
+------------------------------------------------------------------------------------------------------
+from pandas import Categorical
+ordered_days = tips.day.value_counts().index#获取所有日期的值
+
+#数据制定数据的顺序的方式，先设定顺序Categorical处理一个新的顺，在通过
+ordered_days = Categorical(['Thur', 'Fri', 'Sat', 'Sun'])#类别Categorical
+
+g = sns.FacetGrid(tips, row="day", row_order=ordered_days,size=1.7, aspect=4,)
+row_order=自定义设定顺序
+
+g.map(sns.boxplot, "total_bill");
+------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------
