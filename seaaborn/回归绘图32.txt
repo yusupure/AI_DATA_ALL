@@ -11,7 +11,8 @@ np.random.seed(sum(map(ord, "regression")))#绘图方式
 tips = sns.load_dataset("tips")提取文件内容
 tips.head()打印内容np一样
 -----------------------------------------------------------------------------------------------------------------------------------
-regplot()回归图
+案例：
+regplot()回归图初学seaborn回归函数优先使用此函数
 sns.regplot(x="total_bill",y="tip",data=tips)x,y轴名称，传入data方式
 x_jitter=.05加入小范围的浮动值
 sns.implot()工具更多功能更多
