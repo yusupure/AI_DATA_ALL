@@ -42,4 +42,71 @@ row_order=自定义设定顺序
 
 g.map(sns.boxplot, "total_bill");
 ------------------------------------------------------------------------------------------------------
+#设定颜色方式
+pal = dict(Lunch="seagreen", Dinner="gray")
+#设定调色板palette
+g = sns.FacetGrid(tips, hue="time", palette=pal, size=5)
+#设定图形参数
+g.map(plt.scatter, "total_bill", "tip", s=50, alpha=.7, linewidth=.5, edgecolor="white")
+#标签
+g.add_legend();
+
 ------------------------------------------------------------------------------------------------------
+#hue_kws={"marker":["^","v"]}设定图形的形状
+g = sns.FacetGrid(tips, hue="sex", palette="Set1", size=5, hue_kws={"marker": ["^", "v"]})
+
+#edgecolor="white"图形报表颜色控制
+g.map(plt.scatter, "total_bill", "tip", s=100, linewidth=.5, edgecolor="white")
+g.add_legend();
+
+------------------------------------------------------------------------------------------------------
+with sns.axes_style("white"):
+    g = sns.FacetGrid(tips, row="sex", col="smoker", margin_titles=True, size=2.5)
+g.map(plt.scatter, "total_bill", "tip", color="#334488", edgecolor="white", lw=.5);
+
+#指定轴的名称方式
+g.set_axis_labels("Total bill (US Dollars)", "Tip");
+
+#xticks设置X轴的取值方位取值范围【10，30，50】在图形底部
+#yticks设置Y轴的取值方位取值范围[2, 6, 10]在图形底部
+g.set(xticks=[10, 30, 50], yticks=[2, 6, 10]);
+
+#wspace子图之间的宽间隔
+#hspace子图自建高度间隔
+g.fig.subplots_adjust(wspace=.02, hspace=.02);
+#上下左右的偏移程度
+#g.fig.subplots_adjust(left  = 0.125,right = 0.5,bottom = 0.1,top = 0.9, wspace=.02, hspace=.02)
+
+------------------------------------------------------------------------------------------------------
+案例：
+iris = sns.load_dataset("iris")
+g = sns.PairGrid(iris)
+g.map(plt.scatter);
+对角线画图方式
+g = sns.PairGrid(iris)
+g.map_diag(plt.hist)
+g.map_offdiag(plt.scatter);
+物种类别拆分
+g = sns.PairGrid(iris, hue="species")
+g.map_diag(plt.hist)
+g.map_offdiag(plt.scatter)
+g.add_legend();
+特征选取方式
+#vars=特征的名字理解为字典名称
+g = sns.PairGrid(iris, vars=["sepal_length", "sepal_width"], hue="species")
+g.map(plt.scatter);
+调色板处理方式
+#调色板渐变方式palette="GnBu_d"
+g = sns.PairGrid(tips, hue="size", palette="GnBu_d")
+#颜色布局 edgecolor="white"
+g.map(plt.scatter, s=50, edgecolor="white")
+g.add_legend();
+------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------
+
