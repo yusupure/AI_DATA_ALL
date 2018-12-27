@@ -1,0 +1,396 @@
+pip install seaborn
+conda install seaborn
+
+由于seaborn是基于matplotlib底层来的，固调用需求把函数同时引入
+import seaborn as sns
+import numpy as np
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+%matplotlib inline#通过实时交互图表
+
+使用方法，通过函数创造数据（则线图）
+def sinplot(fins=1):
+  x=np.linspace(0,14,100)#0到14个100点
+  for i in range(1,7):
+      plt.plot(x,np.sin(x+i*0.5))*(7-i)*fins)
+ sinplot()执行函数数据内容
+
+#属于默认的图表函数，sns.set()
+调用函数内容创建的图表
+
+风格函数set_style()
+5种主题风格
+•darkgrid
+•whitegrid
+•dark
+•white
+•ticks
+
+set_context("notbook",font_scale=x,rc={"lines.linewidth":1.0}) 调整绘图元素
+font_scale=x,y坐标文字大小
+rc={"lines.linewidth":1.0}线条粗寛
+
+#boxplot（）#蜡烛图
+sns.set_style("whitegrid")#演示风格
+data=np.random.normal(size=(20,6))+np.arange(6)/2
+sns.boxplot(data=data)#palette调色板添加于图形内部sns.boxplot(palette="xxx")样式
+
+
+violinplot地形图
+
+#despine()进行边框控制
+offset=XX两个图形的距离图对轴线的距离
+left=去除边框位置，此为左，其他根据上下左右进行空值
+
+
+***************************************************************************************************************
+调色板用法
+
+import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
+%matplotlib inline
+
+### 调色板 ###
+* 颜色很重要
+* color_palette()能传入任何Matplotlib所支持的颜色
+* color_palette()不写参数则默认颜色
+  $$$$$$$("hls", 8)8组hls颜色方案
+  分类色板
+  cp=sns.color_palette()
+  sns.palplot(cp)
+  
+* set_palette()设置所有图的颜色
+
+圆形画板
+sns.color_palette("hls",8)分别组成8个颜色组
+np.random.normal((size=20,8))+np.arange(8)/2
+sns.boxplot(data=data,palette=sns.color_palette("hls",8))
+
+颜色饱和度
+* hls_palette(控制颜色的高亮，饱和)
+  sns.hls_palette(8, l=.7, s=.9)8组颜色，l=亮度，s=饱和
+  sns.boxplot(data=data,palette=sns.color_palette("hls", 8))
+  "Paired",8一对一对的颜色
+
+xkcd颜色命名颜色RGB颜色空间
+plt.plot([0,1],[0,1]),sns.xkcd_rgb["pale red"],lw=3)
+plt.plot([0,1],[0,2]),sns.xkcd_rgb["medium green"],lw=3)
+plt.plot([0,1],[0,3]),sns.xkcd_rgb["denim blue"],lw=3)
+
+连续色板
+Blues(越来越深
+BuGn_r深变浅
+cubehelix色调线性变换start=开始，范围rot
+light_palette(green)
+dark_palette(purple)调用定制连续调色板
+navy（reverse=True）
+
+#色调线性变换
+sns.cubehelix_palette()
+srart=颜色区间
+rot=区间
+
+调用定制连续调色板
+sns.light_palette()高亮变换   -----翻转变换reverse=True
+sns.dark_palette()深色变换    -----翻转变换reverse=True
+
+案例
+x,y=np.random.multivariate.normal([0,0],[[1,-.5],[-.5,1]],size=300).T
+dl=sns.dark_palette("green", as_cmap=True) AS_cmap=True地图图形
+sns.kdeplot(x,y,cmap=dl)
+sns.palplot(sns.light_palette((210, 90, 60), input="husl"))
+
+
+***************************************************************************************************************
+
+直方图，蜂巢图
+%matplotlib inline
+import numpy as np
+import pandas as pd
+from scipy import stats, integrate
+import matplotlib.pyplot as plt
+import seaborn as sns
+################################################################################################################
+函数部分
+distplot，seaborn的displot()函数集合了matplotlib的hist()与核函数估计kdeplot的功能，增加了rugplot分布观测条
+显示与利用scipy库fit拟合参数分布的新颖用途。具体用法如下： 
+seaborn.distplot(a, bins=None, hist=True, kde=True, rug=False, fit=None, hist_kws=None, kde_kws=None, 
+rug_kws=None, fit_kws=None, color=None, vertical=False, norm_hist=False, axlabel=None, label=None, ax=None) 
+
+Parameters: 
+a : Series, 1d-array, or list. #一维数组 
+bins : argument for matplotlib hist(), or None, optional #设置分桶数 
+hist : bool, optional #控制是否显示分桶柱子 
+kde : bool, optional #控制是否显示核密度估计图 
+rug : bool, optional #控制是否显示观测实例竖线 
+fit : random variable object, optional ,(stats.gamma) #控制拟合的参数分布图形增加线性统计指标
+{hist, kde, rug, fit}_kws : dictionaries, optional 
+Keyword arguments for underlying plotting functions. 
+vertical : bool, optional #显示正交控制 
+If True, oberved values are on y-axis.
+################################################################################################################
+
+
+案例
+sns.set(color_codes=True)
+np.random.seed(sum(map(ord, "distributions")))
+#ord()函数它以一个字符（长度为1的字符串）作为参数，返回对应的ASCII数值，或者Unicode数值，
+#如果所给的Unicode字符超出了你的Python定义范围，则会引发一个TypeError的异常。
+#利用np.random.seed()函数设置相同的seed，每次生成的随机数相同。如果不设置seed，则每次会生成不同的随机数
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+直方图：
+案例：x=np.random.normal(size=100)
+sns.distplot(x, bins=20, kde=False，fig=stats.gamma)bins=(拆分份数）
+kde控制是否画kde曲线，bins是分桶数，rug控制是否画样本点(参考rug图可以设定合理的bins)
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+mean. cov=[0,1],[(1,.5),(5,1)]均值，协方差生成数据
+data=np.random.multivariate_normal(mean,cov,200)#生成200个随机数据
+df=pd.DataFrame(data,columns=("x","y")2维数据
+sns.jointplot(x="x",y="y",data=df)主要生成散点图，和直方图生成两个图标矩阵
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+蜂巢图
+x,y=np.random.multivariate_normal(mean,cov,200)#
+with sns.axes_style("withe")
+  sns.jointplot(x="x",y="y",kind="hex",data=df)kind制定图形。蜂巢图hex
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+内置数据集
+iris=sns.load_dataset("iris")
+sns.pairplot(iris)数据图集
+################################################################################################################
+
+回归绘图
+%matplotlib inline
+import numpy as np
+import pandas as pd
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+import seaborn as sns
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+sns.set(color_codes=True)开启色彩
+np.random.seed(sum(map(ord, "regression")))#绘图方式
+tips = sns.load_dataset("tips")提取文件内容
+tips.head()打印内容np一样
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+案例：
+regplot()回归图初学seaborn回归函数优先使用此函数
+sns.regplot(x="total_bill",y="tip",data=tips)x,y轴名称，传入data方式
+x_jitter=.05加入小范围的浮动值
+sns.implot()工具更多功能更多
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+回归绘图
+sns.set(style="whitegrid",color_codes=True)
+np.random.seed(sum(map(ord, "regression")))
+
+提取三个数据集
+sns.load_dataset("iris",tips,titanic)
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+sns.stripplot(x="daty",y="total_bill",data=tips,jitter=True)
+jitter=True增加数据的偏移值
+
+散点图
+sns.swarmplot(x="total_bill",y="daty",data=tips,hue="sex")
+更好X,Y的值存放位置就会变成横向或纵向方式显示图形
+hue="分类数据"
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+合图：
+IQR即统计学概念四分位距，第一/四分位与第三/四分位之间的距离
+N=1.5IQR如果一个值>Q3+N 或 < Q1+N,则为离群点
+sns.boxplot(x="day",y="total_bill",hue="time",data=tipe)
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+小提琴图
+sns.violinplot(x="day",y="total_bill",hue="time",data=tipe,split=Ture)
+split=Ture左右属性进行分拆方式
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+散点图和提琴图合并两个图形
+sns.violinplot(x="day",y="total_bill",hue="time",data=tipe,split=Ture,inner=None)
+inner=None取消中间的点型
+
+sns.swarmplot(x="total_bill",y="daty",data=tips,hue="sex",color='w',alpha=.5)
+color=颜色值;
+alpha=.5透明程度
+
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+条形图：
+sns.barplot(x="sex",y="survived",hue='class',data=titanic)
+hue='class'数据字段分色块
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+点图带线链接：
+sns.pointplot(x="sex",y="survived",hue='class',data=titanic)
+点图升级显示方式：
+sns.pointplot(x="sex",y="survived",hue='class',data=titanic,
+              palette={"meln":"g","famale":"m"},把男女设定的颜色
+              markers={"^","o"},linestyles=["-","--"]通过marker设定他们所在点的图形，linestyles=设定List方式图形链接的线方法
+              )
+
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+sns.boxplot(data=iris,orient="h")
+orient=用于设定横向或者纵向方式
+
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+折线图：
+sns.factorplot(x="sex",y="survived",hue='smoker',data=titanic)
+
+sns.factorplot(x="sex",y="survived",hue='smoker',col="time",data=tips,kind="swarm")
+col="time"时间字段的平铺方式
+
+##################################################################################################################
+
+sns.factorplot(kind=图形名称)可以转换成任何一类图形
+seaborn.factorplot(x=None, y=None, hue=None, data=None, row=None, col=None, 
+col_wrap=None, estimator=<function mean>, ci=95, n_boot=1000, units=None, order=None, 
+hue_order=None, row_order=None, col_order=None, kind='point', size=4, aspect=1, orient=None, 
+color=None, palette=None, legend=True, legend_out=True, sharex=True, sharey=True, margin_titles=False, facet_kws=None, **kwargs)
+
+### Parameters： ###
+
+* x,y,hue 数据集变量 变量名
+* date 数据集 数据集名
+* row,col 更多分类变量进行平铺显示 变量名
+* col_wrap 每行的最高平铺数 整数
+* estimator 在每个分类中进行矢量到标量的映射 矢量
+* ci 置信区间 浮点数或None
+* n_boot 计算置信区间时使用的引导迭代次数 整数
+* units 采样单元的标识符，用于执行多级引导和重复测量设计 数据变量或向量数据
+* order, hue_order 对应排序列表 字符串列表
+* row_order, col_order 对应排序列表 字符串列表
+* kind : 可选：point 默认, bar 柱形图, count 频次, box 箱体, violin 提琴, strip 散点，swarm 分散点
+size 每个面的高度（英寸） 标量
+aspect 纵横比 标量
+orient 方向 "v"/"h"
+color 颜色 matplotlib颜色
+palette 调色板 seaborn颜色色板或字典
+legend hue的信息面板 True/False
+legend_out 是否扩展图形，并将信息框绘制在中心右边 True/False
+share{x,y} 共享轴线 True/False
+##################################################################################################################
+
+FaceGrid函数：使用较多子集的时候使用的函数
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+%matplotlib inline
+import numpy as np
+import pandas as pd
+import seaborn as sns
+from scipy import stats
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+sns.set(style="ticks")
+np.random.seed(sum(map(ord, "axis_grids")))
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+条形图
+tips=sns.load_dataset("tips")
+g=sns.FaceGrid(tips,col="time")先创建好数据框架
+g.map(plt.hist,"tip")#plt.hist条形图方式
+
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+g=sns.FaceGrid(tips,col="sex",hue="somker")#hue代表类别信息名称
+g.map(plt.scatter,"total_bill","tip",appha=.7)直接制定数据字段及透明程度
+g.add_legend()悬浮类别信息
+
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+g = sns.FacetGrid(tips, row="smoker", col="time", margin_titles=True)
+g.map(sns.regplot, "size", "total_bill", color=".1", fit_reg=False, x_jitter=.1);
+margin_titles=True是否显示标题名称
+fit_reg=False回归线
+x_jitterr=.1#浮动值
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+布局相
+g = sns.FacetGrid(tips, col="day", size=4, aspect=.5)
+g.map(sns.barplot, "sex", "total_bill");
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+from pandas import Categorical
+ordered_days = tips.day.value_counts().index#获取所有日期的值
+
+#数据制定数据的顺序的方式，先设定顺序Categorical处理一个新的顺，在通过
+ordered_days = Categorical(['Thur', 'Fri', 'Sat', 'Sun'])#类别Categorical
+
+g = sns.FacetGrid(tips, row="day", row_order=ordered_days,size=1.7, aspect=4,)
+row_order=自定义设定顺序
+
+g.map(sns.boxplot, "total_bill");
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+#设定颜色方式
+pal = dict(Lunch="seagreen", Dinner="gray")
+#设定调色板palette
+g = sns.FacetGrid(tips, hue="time", palette=pal, size=5)
+#设定图形参数
+g.map(plt.scatter, "total_bill", "tip", s=50, alpha=.7, linewidth=.5, edgecolor="white")
+#标签
+g.add_legend();
+
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+#hue_kws={"marker":["^","v"]}设定图形的形状
+g = sns.FacetGrid(tips, hue="sex", palette="Set1", size=5, hue_kws={"marker": ["^", "v"]})
+
+#edgecolor="white"图形报表颜色控制
+g.map(plt.scatter, "total_bill", "tip", s=100, linewidth=.5, edgecolor="white")
+g.add_legend();
+
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+with sns.axes_style("white"):
+    g = sns.FacetGrid(tips, row="sex", col="smoker", margin_titles=True, size=2.5)
+g.map(plt.scatter, "total_bill", "tip", color="#334488", edgecolor="white", lw=.5);
+
+#指定轴的名称方式
+g.set_axis_labels("Total bill (US Dollars)", "Tip");
+
+#xticks设置X轴的取值方位取值范围【10，30，50】在图形底部
+#yticks设置Y轴的取值方位取值范围[2, 6, 10]在图形底部
+g.set(xticks=[10, 30, 50], yticks=[2, 6, 10]);
+
+#wspace子图之间的宽间隔
+#hspace子图自建高度间隔
+g.fig.subplots_adjust(wspace=.02, hspace=.02);
+#上下左右的偏移程度
+#g.fig.subplots_adjust(left  = 0.125,right = 0.5,bottom = 0.1,top = 0.9, wspace=.02, hspace=.02)
+
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+案例：
+iris = sns.load_dataset("iris")
+g = sns.PairGrid(iris)
+g.map(plt.scatter);
+对角线画图方式
+g = sns.PairGrid(iris)
+g.map_diag(plt.hist)
+g.map_offdiag(plt.scatter);
+物种类别拆分
+g = sns.PairGrid(iris, hue="species")
+g.map_diag(plt.hist)
+g.map_offdiag(plt.scatter)
+g.add_legend();
+特征选取方式
+#vars=特征的名字理解为字典名称
+g = sns.PairGrid(iris, vars=["sepal_length", "sepal_width"], hue="species")
+g.map(plt.scatter);
+调色板处理方式
+#调色板渐变方式palette="GnBu_d"
+g = sns.PairGrid(tips, hue="size", palette="GnBu_d")
+#颜色布局 edgecolor="white"
+g.map(plt.scatter, s=50, edgecolor="white")
+g.add_legend();
+
+##################################################################################################################
+sns.FacetGrid（data, row=None, col=None, hue=None, col_wrap=None, sharex=True, sharey=True, height=3, aspect=1, palette=None, 
+row_order=None, col_order=None, hue_order=None, hue_kws=None, dropna=True, legend_out=True, despine=True,
+margin_titles=False, xlim=None, ylim=None, subplot_kws=None, gridspec_kws=None, size=None)
+
+
+
+
+##################################################################################################################
