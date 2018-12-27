@@ -17,14 +17,21 @@ def sinplot(fins=1):
 
 #属于默认的图表函数，sns.set()
 调用函数内容创建的图表
-
-风格函数set_style()
-5种主题风格
-•darkgrid
-•whitegrid
-•dark
-•white
-•ticks
+"""
+    Seaborn 默认浅灰色背景与白色网格线
+    seaborn将matplotlib的参数划分为两个组，第一组控制图表的样式，第二组控制图的度量尺度元素
+    控制样式：axes_style()  set_style()  返回一系列的参数
+    度量图：plotting_context()  set_context() 设置matplotlib的默认属性
+"""
+"""
+    图样式方法axes_style()和set_style():
+        5种seaborn主题形式：darkgrid, whitegrid, dark, white, ticks, 默认为darkgrid
+            whitegrid:白色网格
+            dark:灰底
+            white:白底
+            ticks:刻度
+    用despline()方法去掉图表中de各种轴：
+    with语句临时设置图表样式
 
 set_context("notbook",font_scale=x,rc={"lines.linewidth":1.0}) 调整绘图元素
 font_scale=x,y坐标文字大小
