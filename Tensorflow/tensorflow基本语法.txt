@@ -1,1 +1,15 @@
-
+import tensorflow as tf
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+函数：
+tf.constant([1,2])用于创造一个矩阵为1行2列格式
+tf.add()用于对矩阵进行相加操作
+tf.Session()创造一个回话框用于打印数据显示
+例子：
+sess=tf.Session()函数赋值给sess
+sess.run()执行函数内容
+sess.close需要手动释放资源
+例子2：系统自动释放资源方式
+with tf.Session() as sess:
+  total=sess.run(名称)
+ print(total)
+ 
