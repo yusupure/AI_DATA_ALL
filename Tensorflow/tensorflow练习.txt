@@ -1,1 +1,31 @@
-1
+import tensorflow as tf
+import numpy as np
+#x轴创建100个随机的数列，设置他的格式为32为的浮点型
+x_data=np.random.rand(100).astype(np.float32)
+#预测值需要非常接近0.1，误差需要非常接近0.3
+y_data=x_data*0.1+0.3
+#开始创建结构
+#定义参数变量Variable，然后通过随机数列方法生成方法，结构【1】维随机数据范围是-1.0 到正1.0范围
+Weights=tf.Variable(tf.random_uniform([1],-1.0,1.0))
+#初始化值为0 zeros 1维数列
+biases=tf.Variable(tf.zeros([1]))
+#预测的y值，Weihtes*0.1+0范围
+y=Weihtes*x_data+biases
+#提升Y值的准确度，预测的Y值与实际y_data实际的差别
+loss=tf.reduce_mean(tf.square(y-y_data))
+#神经网络已经存在误差，通过下方法减少误差key ，GradientDescentOptimizer学习效率
+optimizer=tf.train.GradientDescentOptimizer(0.5)
+#优化器减少误差提升准确率
+train=optimizer.minimize(loss)
+#初始化变量方法initialize_all_variables
+init=tf.initialize_all_variables()
+#创建会话
+sess=tf.Session()
+#执行会话
+sess.run(init)
+#循环设置执行步
+for step in range(201):
+    #开始训练train
+    sess.run(train)
+    if step % 20==0:
+        print(step,sess.run(Weihtes),sess.run(biases))
