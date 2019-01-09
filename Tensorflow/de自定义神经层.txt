@@ -1,0 +1,38 @@
+import tensorflow as tf
+Import numpy as np
+#自定义神经层
+def add_layer(inputs,in_size,out_size,activation_function=None)#线性函数
+  Weights=tf.Variable(tf.random_normal([in_size,out_size]))
+  biases=tf.Variable(tf.zeros([1,out_size]))+0.1)
+  Wx_plus_b=tf.matmul(inputs,Weights)+biases
+  if activation_function is None:
+    outputs=Wx_plus_b
+  else:
+    outputs=activation_function(Wx_plus_b)
+  return outputs
+  
+#创建数据层
+x_data=np.linspace(-1,1,300)[:,np.newaxis] #np.newaxis 在使用和功能上等价于 None
+noise=np.random.normail(0,0.05,x_data) #造点 格式为x_data格式
+y_data=np.square(x_data)-0.5+noise #2次的x_data,
+
+#输入给train_step的值
+xs=tf.placeholder(tf.float32,[None,1])#X_data属性只有1
+ys=tf.placeholder(tf.float32,[None,1])需要设置Dtype
+
+#定义隐藏层
+l1=add_layer(xs,1,10,activation_function=tf.nn.relu)#activation_function=tf.nn.relu激励函数
+predition=add_layer(l1,10,1,activation_function=None)#输出层
+#预测值
+loss=tf.reduce_mean(tf.sum(tf.square(ys-predition),reduction_indices=[1]))#对每个例子的平方,并累加总和，在进行平均值
+#练习
+train_step=tf.train.GradientDescentOptimizer(0.1).miniminze(loss)#减少他的误差
+#初始化变量
+init=tf.initialize_all_variables()
+sess=tf.Session()
+sess.run(init)
+#学习次数
+for i in range(1000):
+  sess.run(train_step,feed_dict={xs:x_data,ys:y_data})
+  if i % 50==0:
+    print(sess.run(loss,feed_dict={xs:x_data,ys:y_data}))
