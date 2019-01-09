@@ -1,5 +1,6 @@
 import tensorflow as tf
 Import numpy as np
+import matplotlib.pyplot as plt
 #自定义神经层
 def add_layer(inputs,in_size,out_size,activation_function=None)#线性函数
   Weights=tf.Variable(tf.random_normal([in_size,out_size]))
@@ -31,8 +32,21 @@ train_step=tf.train.GradientDescentOptimizer(0.1).miniminze(loss)#减少他的�
 init=tf.initialize_all_variables()
 sess=tf.Session()
 sess.run(init)
+#可视化检查
+fig=plt.figure()
+ax=fig.add_subplot(1,1,1)
+ax.scatter(x_data,y_data)
+plt.show()
 #学习次数
 for i in range(1000):
   sess.run(train_step,feed_dict={xs:x_data,ys:y_data})
   if i % 50==0:
-    print(sess.run(loss,feed_dict={xs:x_data,ys:y_data}))
+    #print(sess.run(loss,feed_dict={xs:x_data,ys:y_data}))
+    try:
+      ax.lines.remove(lines[0])#消除第一条线
+    except Exception:
+      pass
+    prediction_value=sess.run(prediction,feed_dict={xs:x_data})
+    lines=ax.plot(x_data,prediction_value,'r',lw=5)
+    
+    plt.pause(0.1)
