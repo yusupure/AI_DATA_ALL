@@ -1,0 +1,51 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Tue Jan 29 23:11:59 2019
+
+@author: Administrator
+"""
+
+import tensorflow as tf
+
+w1=tf.Variable(0,dtype=tf.float32)
+#创建轮数
+globel_step=tf.Variable(0,trainable=False)
+#衰减率(一般设计最大值0.99)
+moving_aveage_decay=0.99
+ema=tf.train.ExponentialMovingAverage(moving_aveage_decay,globel_step)
+ema_op=ema.apply(tf.trainable_variables())
+with tf.Session()as sess:
+    sess.run(tf.global_variables_initializer())
+    print(sess.run([w1,ema.average(w1)]))
+    #更新W1的值为1
+    sess.run(tf.assign(w1,1))
+    sess.run(ema_op)
+    print(sess.run([w1,ema.average(w1)]))
+    #更新W1的参数为10，同时更新为100轮
+    sess.run(tf.assign(globel_step,100))
+    sess.run(tf.assign(w1,10))
+    sess.run(ema_op)
+    #复制多个执行次数查看变化
+    sess.run(ema_op)
+    print(sess.run([w1,ema.average(w1)]))
+    
+    sess.run(ema_op)
+    print(sess.run([w1,ema.average(w1)]))
+    
+    sess.run(ema_op)
+    print(sess.run([w1,ema.average(w1)]))
+    
+    
+    sess.run(ema_op)
+    print(sess.run([w1,ema.average(w1)]))
+    
+    
+    sess.run(ema_op)
+    print(sess.run([w1,ema.average(w1)]))
+    
+    sess.run(ema_op)
+    print(sess.run([w1,ema.average(w1)]))
+    
+    sess.run(ema_op)
+    print(sess.run([w1,ema.average(w1)]))
+        
