@@ -7,10 +7,10 @@ learning–rate=LEARNING–RATE–BASE∗LEARNING–RATE–DECAYglobalstepLEARNI
 
 
 import tensorflow as tf
-LEARNING_RATE_BASE=0.1
-LEARNING_RATE_DECAY=0.99
-LEARNING_RATE_STEP=1
-global_step=tf.Variable(0,trainable=False)
+LEARNING_RATE_BASE=0.1#学习率的最小值
+LEARNING_RATE_DECAY=0.99#学习率的最大值
+LEARNING_RATE_STEP=1#每次自动变化值范围
+global_step=tf.Variable(0,trainable=False)#不参与计算的表示trainable=False,默认设置0
 learning_rate=tf.train.exponential_decay(LEARNING_RATE_BASE,global_step,LEARNING_RATE_STEP,LEARNING_RATE_DECAY,staircase=True)
 w=tf.Variable(tf.constant(5,dtype=tf.float32))
 loss=tf.square(w+1)
