@@ -1,0 +1,134 @@
+神经网络的八股
+准备、前传、反传、迭代
+
+准备。
+Import
+常量定义
+生成数据集
+前向传播：定义输入、参数和输出
+反向传播，定义损失函数、反向传播方法
+
+
+搭建模块化的神经网络八股
+前向传播就是搭建网络，设计网络结构(forward.py)
+def forward(x,regularizer):
+    w=
+    b=
+    y=
+    return y
+def get_weight(shape,regularizer):
+    w=tf.Variable()
+    tf.add_to_collection('losses',tf.contrib.layers.l2_regulaizer(w))
+def get_bias(shape)
+    b=tf.Variable()
+    return b
+    
+    
+反向传播就是训练网络，优化网络参数(backward.py)
+def backward():
+    x=tf.placeholder()
+    y_=tf.placeholder()
+    y=forward,forward(x,REGULARIZER)
+    global_step=tf.Variable(0,trainable=False)
+    loss=
+    loss可以是交叉熵损失、均方差损失。可以加入正则化
+    learning_rate=tf.train.exponentital_decay(
+        LEARNING_RATE_BASE,
+        global_step,
+        总样本数/BATCH_SIZE,
+        LEARNING_RATE_DECAY,
+        staircase=True)
+    train_step=tf.train.GradientDescentOptimizer(learning_rate).minimize(loss,global_step=global_step)
+    #滑动平均
+    ema=tf.train.ExponentialMovingAverageOptimizer(MOVING_AVERAGE_DECAY,global_step)
+    ema_op=ema.apply(tf.trainable_variables())
+    with tf.control_dependencies([train_step,ema_op]):
+        train_op=tf.no_op(name="train")
+    with tf.Session() as sess:
+        init_op=tf.global_variables_initializer()
+        sess.run(init_op)
+        for i in range(STEPS):
+            sess.run(train_step,feed_dict={x:,y_:})
+            if i %轮数==0:
+                print
+if __name__=='__main__':
+    backward()
+    
+    
+神经网络模块化代码示例
+#coding:utf-8
+import tensorflow as tf
+def get_weight(shape,regularizer):
+    w=tf.Variable(tf.random_normal(shape),dtype=tf.float32)
+    tf.add_to_collection('losses',tf.contrib.layers.l2_regularizer(regularizer)(w))
+    return w
+def get_bias(shape):
+    b=tf.Variable(tf.constant(0.01,shape=shape))
+    return b
+def forward(x,regularizer):
+    w1=get_weight([2,11],regularizer)
+    b1=get_bias([11])
+    y1=tf.nn.relu(tf.matmul(x,w1)+b1)
+    w2=get_weight([11,1],regularizer)
+    b2=get_bias([1])
+    y=tf.matmul(y1,w2)+b2#输出层不过激活
+    return y
+    
+    
+随机生成训练数据
+#coding:utf-8
+import numpy as np
+import matplotlib.pyplot as plt
+seed=2
+def generateds():
+    rdm=np.random.RandomState(seed)
+    X=rdm.randn(300,2)
+    Y_=[int(x0*x0+x1*x1<2) for(x0,x1) in X]
+    Y_c=[['red' if y else 'blue']for y in Y_]
+    X=np.vstack(X).reshape(-1,2)
+    Y_=np.vstack(Y_).reshape(-1,1)
+    return X,Y_,Y_c
+    
+backward.py
+
+
+#coding:utf-8
+import tensorflow as tf
+import numpy as np
+import matplotlib.pyplot as plt
+import forward
+import generateds
+STEPS=40000
+BATCH_SIZE=30
+LEARNING_RATE_BASE=0.001
+LEARNING_RATE_DECAY=0.999
+REGULARIZER=0.01
+def backward():
+    x=tf.placeholder(tf.float32,shape=(None,2))
+    y_=tf.placeholder(tf.float32,shape=(None,1))
+    X,Y_,Y_c=generateds.generateds()
+    y=forward.forward(x,REGULARIZER)
+    global_step=tf.Variable(0,trainable=False)
+    learning_rate=tf.train.exponential_decay(LEARNING_RATE_BASE,global_step,300/BATCH_SIZE,LEARNING_RATE_DECAY,staircase=True)
+    loss_mse=tf.reduce_mean(tf.square(y-y_))
+    loss_total=loss_mse+tf.add_n(tf.get_collection('losses'))
+    train_step=tf.train.AdamOptimizer(learning_rate).minimize(loss_total)
+    with tf.Session() as sess:
+        init_op=tf.global_variables_initializer()
+        sess.run(init_op)
+        for i in range(STEPS):
+            start=(i*BATCH_SIZE)%300
+            end=start+BATCH_SIZE
+            sess.run(train_step,feed_dict={x:X[start:end],y_:Y_[start:end]})
+            if i%2000==0:
+                loss_v=sess.run(loss_total,feed_dict={x:X[start:end],y_:Y_[start:end]})
+                print("%d,%f"%(i,loss_v))
+        xx,yy=np.mgrid[-3:3:.01,-3:3:.01]
+        grid=np.c_[xx.ravel(),yy.ravel()]
+        probs=sess.run(y,feed_dict={x:grid})
+        probs=probs.reshape(xx.shape)
+    plt.scatter(X[:,0],X[:,1],c=np.squeeze(Y_c))
+    plt.contour(xx,yy,probs,levels=[.5])
+    plt.show()
+if __name__=='__main__':
+    backward()
