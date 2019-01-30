@@ -134,10 +134,37 @@ ce=tf.reduce_mean(y*tf.log(tf.clip.by_value(pd,1e-12,10)
 反Ax p(x=X)E[1,0]且p(x=X)=1
 ce=tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=pd,labels=y))
 
+----------------------------------------------------------------------------------------------------------------------------------------
+第五课 学习率
+学习率：每次参数更新的幅度（learning_rate）
+wn+1=wn-learning_rate▲
+wn+1:更新后的值
+wn:当前参数
+learning_rate:学习率
+▲:损失函数的梯度即为Loss值
 
+eg损失函数:loss=(w+1)的平方 梯度▲=a*loss/aw=2w+2
+例子
+1参数为W:5      5-0.2*(2*5+2)=2.6
+2参数为W:2.6    2.6-0.2*(2*2.6+2)=1.16
+3参数为W:1.16   1.16-0.2*(2*1.16+2)=0.296
 
+学习率设置多少为合适？
+loss=tf.square(w+1)
+学习率为=1
+之后学习率为0.0001
+大了震荡不收敛，小了收敛速度慢
 
-
+自动化损失率控制
+指数衰减学习率
+案例：
+LEARNING_RATE_BASE=1      学习率初始值
+LEARNING_RATE_STEP=0.99   多少轮更新一次学习率
+LEARNING_RATE_DECAY=1     学习率衰减率[0,1]
+GLOBAT_STEP=tf.Variable(0,trainable=FALSE)   trainable注明此参数不参与计算(一般为batch_size/样本数）运行轮数)
+执行例子：
+leaning_rate=tf.train.exponetial_decay(学习率初始值，运行轮数，多少轮更新一次学习率，学习率衰减率，staircase=True/false)
+在train_step=.GradientDescentOptimizer(leaning_rate).minimize(loss,GLOBAT_STEP)
 
 
 
