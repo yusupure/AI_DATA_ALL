@@ -1,0 +1,21 @@
+import tensorflow as tf
+import numpy as np
+batch_size=8
+seed=23455
+rng=np.random.RandomState(seed)
+xdata=rng.rand(32,2)
+ydata=[[int(x0+x1<1)]for (x0,x1) in xdata]
+w1=tf.Variable(tf.random_normal([2,3],stddev=1,seed=1))
+w2=tf.Variable(tf.random_normal([3,1],stddev=1,seed=1))
+a=tf.matmul(x,w1)
+pd=tf.matmul(a,w2)
+loss=tf.reduce_mean(tf.square(pd-y))
+train_step=tf.train.GradientDescentOptimizer(0.001).minimize(loss)
+with tf.Session() as sess:
+    sess.run(tf.global_variables_initializer())
+    for i in range(3000):
+        start=(i*batch_size)%32
+        end=start+batch_size
+        sess.run(train_step,feed_dict={x:xdata[start:end],y:ydata[start:end]})
+        if i%500==0:
+            print(i,sess.run(loss,feed_dict={x:xdata,y:ydata}))
