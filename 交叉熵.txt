@@ -1,0 +1,26 @@
+import tensorflow as tf
+import numpy as np
+batch_size=8
+seed=23455
+cost=9
+profit=1
+rng=np.random.RandomState(seed)
+xdata=rng.rand(32,2)
+ydata=[[x1+x2+(rng.rand()/10.0-0.05)]for (x1,x2) in xdata]
+x=tf.placeholder(tf.float32,[None,2])
+y=tf.placeholder(tf.float32,[None,1])
+w1=tf.Variable(tf.random_normal([2,1],stddev=1,seed=1))
+#pd=tf.matmul(x,w1)
+pd=tf.matmul(x,w1)
+#loss=tf.reduce_sum(tf.where(tf.greater(pd,y),(pd-y)*cost,(y-pd)*profit))
+loss=tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=pd,labels=y))
+train_step=tf.train.GradientDescentOptimizer(0.001).minimize(loss)
+with tf.Session()as sess:
+    sess.run(tf.global_variables_initializer())
+    for i in range(3000):
+        start=(i*batch_size)%32
+        end=(i*batch_size)%32+batch_size
+        sess.run(train_step,feed_dict={x:xdata[start:end],y:ydata[start:end]})
+        if i %500==0:
+            sess.run(loss,feed_dict={x:xdata,y:ydata})
+            print(i,sess.run(w1))
