@@ -9,6 +9,7 @@ w1=tf.Variable(tf.random_normal([2,3],stddev=1,seed=1))
 w2=tf.Variable(tf.random_normal([3,1],stddev=1,seed=1))
 a=tf.matmul(x,w1)
 pd=tf.matmul(a,w2)
+#均方误差损失率loss
 loss=tf.reduce_mean(tf.square(pd-y))
 train_step=tf.train.GradientDescentOptimizer(0.001).minimize(loss)
 with tf.Session() as sess:
