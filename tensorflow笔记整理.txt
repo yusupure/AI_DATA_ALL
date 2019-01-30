@@ -189,11 +189,13 @@ W1的滑动平均值=min(0.99,101/110)*1.644+(1-min(0.99,101/110)*10=2.328
 使用方法
 ema=tf.train.ExponentialMovingAverage(moving_average_decay,globat_step)
 ema_op=ema.apply([w1])
+ema_op=ema.apply(tf.trainable_variables())
 
 ema.arerage(W1）用于查询滑动平均值
 sess.run(tf.assign(w1,10))更新值的方法
 sess.run(tf.assign(globat_step,100))
-
+打印方式:
+sess.run(ema_op)影子值
 
 
 
