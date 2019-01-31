@@ -12,14 +12,14 @@ Import
 搭建模块化的神经网络八股
 前向传播就是搭建网络，设计网络结构(forward.py)
 def forward(x,regularizer):
-    w=
-    b=
-    y=
+    w=神经层
+    b=偏置值
+    y=输出值
     return y
-def get_weight(shape,regularizer):
+def get_weight(shape,regularizer):#生成权重值
     w=tf.Variable()
     tf.add_to_collection('losses',tf.contrib.layers.l2_regulaizer(w))
-def get_bias(shape)
+def get_bias(shape)#偏置值
     b=tf.Variable()
     return b
     
@@ -65,7 +65,7 @@ def get_weight(shape,regularizer):
 def get_bias(shape):
     b=tf.Variable(tf.constant(0.01,shape=shape))
     return b
-def forward(x,regularizer):
+    def forward(x,regularizer):
     w1=get_weight([2,11],regularizer)
     b1=get_bias([11])
     y1=tf.nn.relu(tf.matmul(x,w1)+b1)
