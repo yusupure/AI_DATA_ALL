@@ -1,0 +1,77 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Wed Mar 20 20:48:36 2019
+
+@author: Administrator
+"""
+
+import tensorflow as tf 
+import os
+from PIL import Image
+
+image_train_path='/sc/fc4/mnist_data_jpg/mnist_train_jpg_60000/'
+label_train_path='/sc/fc4/mnist_data_jpg/mnist_train_jpg_60000.txt'
+image_test_path='/sc/fc4/mnist_data_jpg/mnist_test_jpg_10000/'
+label_test_path='/sc/fc4/mnist_data_jpg/mnist_test_jpg_10000.txt'
+train_path='/sc/fc4/data/mnist_train.tfrecords'
+test_path='/sc/fc4/data/mnist_test.tfrecords'
+data_path='/sc/fc4/data'
+
+def Tfrecorde_loaddata(Tfrecord_path):
+    filename_op=tf.train.string_input_producer([Tfrecord_path])
+    readers=tf.TFRecordReader()
+    _,serialized_example=readers.read(filename_op)
+    features=tf.parse_single_example(serialized_example,features={'labels':tf.FixedLenFeature([10],tf.int64),
+                                                                  'img_raw':tf.FixedLenFeature([],tf.string)})
+    img=tf.decode_raw(features['img_raw'],tf.uint8)
+    img.set_shape([784])
+    img=tf.cast(img,tf.float32)*(1./255)
+    labels=tf.cast(features['labels'],tf.float32)
+    return img,labels
+    
+def Tfrecorde_load(num,isTrain=True):
+    if isTrain:
+        Tfrecord_path=train_path
+    else:
+        Tfrecord_path=test_path
+    img,labels=Tfrecorde_loaddata(Tfrecord_path)
+    img_batch,labels_batch=tf.train.shuffle_batch([img,labels],batch_size=num,num_threads=2,capacity=1000,min_after_dequeue=700)
+    return img_batch,labels_batch
+
+def Tfrecorde_write(train_path,image_train_path,label_train_path):
+    writes1=tf.python_io.TFRecordWriter(train_path)
+    num_pic=0
+    f=open(label_train_path,'r')
+    content=f.readlines()
+    f.close()
+    for contens in content:
+        values=contens.split()
+        image_path=image_train_path+values[0]
+        img_list=Image.open(image_path)
+        img_raw=img_list.tobytes()
+        labels=[0]*10
+        labels[int(values[1])]=1
+        example=tf.train.Example(features=tf.train.Features(feature={'img_raw':tf.train.Feature(bytes_list=tf.train.BytesList(value=[img_raw])),'labels':tf.train.Feature(int64_list=tf.train.Int64List(value=labels)) }))
+        writes1.write(example.SerializeToString())
+        num_pic+=1
+    writes1.close()
+    print('已完成')                                                             
+        
+        
+def Tfrecord_save():
+    filename=os.path.exists(data_path)
+    if not filename:
+        os.makedirs(data_path)
+        print('文件不存在，自动生成')
+    else:
+        print('文件已存在')
+    Tfrecorde_write(train_path,image_train_path,label_train_path)
+    Tfrecorde_write(test_path,image_test_path,label_test_path)
+
+
+
+def main():
+    Tfrecord_save()
+
+if __name__=='__main__':
+    main()
