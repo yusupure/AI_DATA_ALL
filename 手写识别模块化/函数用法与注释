@@ -1,6 +1,7 @@
 函数：
 ****************************************************************************************************************
 mnist_app.py
+
 1.with tf.Graph().as_default()as tg
 注释：同时必须在前置在反向传播后，对数据进行验证读取相关进度信息来校验数据（用于调用断点数据）
 
@@ -28,10 +29,52 @@ ckpt=tf.train.get_checkpoint_state(mnist_backward.model_save_path)#保存训练�
 注释创建数据为1和0之间的浮点型数据
 ****************************************************************************************************************
 mnist_backward.py
+1.tf.nn.sparse_softmax_cross_entropy_with_logits(logits=pd,labels=tf.argmax(y,1))#交叉熵
+2.tf.add_n(tf.get_collection('losses'))#提取正则化后的数据
+3.tf.train.exponential_decay(lrb,num_example_list/batch_size,global_step,lrd,staircase=True)#自动化学习率
+4.tf.train.ExponentialMovingAverage(moving_rate,global_step)滑动平均
+4.ema_op=ema.apply(tf.trainable_variables())#载入滑动平均
+5. with tf.control_dependencies([train_step,ema_op]):train_op=tf.no_op(name='train')#执行方法
+6.saver.save(sess,os.path.join(model_save_path,model_file_name),global_step=global_step)#保存训练数据
 ****************************************************************************************************************
 mnist_farward_0304.py
 ****************************************************************************************************************
 mnist_test.py
+1.
+ema=tf.train.ExponentialMovingAverage(mnist_backward.moving_rate)#滑动平均方法
+ema_restord=ema.variables_to_restore()#恢复训练数据
+saver=tf.train.Saver(ema_restord)#恢复执行训练数据
+cp=tf.equal(tf.argmax(pd,1),tf.argmax(y,1))#转换最大值的布尔值
+acc=tf.reduce_mean(tf.cast(cp,tf.float32))#平均化布尔值转换后的浮点型
+2.#增加线程控制功能
+coord=tf.train.Coordinator()
+theads=tf.train.start_queue_runners(sess=sess,coord=coord)
+coord.request_stop()
+coord.join(theads)
 ****************************************************************************************************************
 mnist_tfrecord
+1.os.path.exists(data_path)#加载文件
+2.os.makedirs(data_path)#自动生成文件
+3.tf.python_io.TFRecordWriter(train_path)#创建一个写入文件方法
+4.img_list.tobytes()#转换成2进制字符串
+5.example=tf.train.Example(features=tf.train.Features(feature={
+'img_raw':tf.train.Feature(bytes_list=tf.train.BytesList(value=[img_raw])),#存放图片的2进制数据
+'labels':tf.train.Feature(int64_list=tf.train.Int64List(value=labels)) }))#存放每个图片信息INDEX
+writes1.write(example.SerializeToString())#写入文件中
+
+6.tf.train.string_input_producer([Tfrecord_path])#加载图片数据路径
+7.tf.TFRecordReader()#创建一个读取方法
+8._,serialized_example=readers.read(filename_op)#读取方式
+9.features=tf.parse_single_example(serialized_example,features={'labels':tf.FixedLenFeature([10],tf.int64),#提取数据64位整形
+                                                                  'img_raw':tf.FixedLenFeature([],tf.string)})#提取数据为字符
+10.tf.decode_raw(features['img_raw'],tf.uint8)#转换数据为整形，无符号数据
+11.img.set_shape([784])#转换列数
+12.tf.cast(img,tf.float32)*(1./255)转换为浮点型数据
+13tf.cast(features['labels'],tf.float32)#转换成浮点数据
+14.tf.train.shuffle_batch(
+[img,labels],#数据打包
+batch_size=num,#每次加载的数据量
+num_threads=2,#线程
+capacity=1000,#每批次数据量
+min_after_dequeue=700)#不够批次数据量随机抽取补全
 ****************************************************************************************************************
