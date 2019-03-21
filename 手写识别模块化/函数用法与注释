@@ -2,27 +2,30 @@
 ****************************************************************************************************************
 mnist_app.py
 1.with tf.Graph().as_default()as tg
-注释：
+注释：同时必须在前置在反向传播后，对数据进行验证读取相关进度信息来校验数据（用于调用断点数据）
 
-2.ckpt=tf.train.get_checkpoint_state(mnist_backward.model_save_path)
-  if ckpt and ckpt.model_checkpoint_path:
-      saver.restore(sess,ckpt.model_checkpoint_path)
-注释：
+2.
+vt=tf.train.ExponentialMovingAverage(mnist_backward.moving_rate)
+vtr=vt.variables_to_restore()#用于恢复滑动平均值
+saver=tf.train.Saver(vtr)#关连已经生成好的临时训练好的数据文件
+ckpt=tf.train.get_checkpoint_state(mnist_backward.model_save_path)#保存训练数据
+  if ckpt and ckpt.model_checkpoint_path:#判断是否存在训练数据
+      saver.restore(sess,ckpt.model_checkpoint_path)#恢复训练数据
 
 3.image_open.resize((28,28),Image.ANTIALIAS)
-注释：
+注释：对读取到的图片进行格式大小转换
 
 4.np.array(img_data.convert('L'))
-注释：
+注释：对换算后的图片进行灰度图处理方法
 
 5.img.reshape([1,784])
-注释：
+注释：转换数据为1维数组为1行784个数据
 
 6.nm_arr.astype(np.float32)
-注释：
+注释：把数据转换为浮点型数据类型
 
 7.np.multiply(nm_arr,1./255.)
-注释
+注释创建数据为1和0之间的浮点型数据
 ****************************************************************************************************************
 mnist_backward.py
 ****************************************************************************************************************
